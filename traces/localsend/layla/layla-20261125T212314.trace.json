@@ -1,0 +1,289 @@
+{
+  "schema": "ecr.trace/0",
+  "id": "layla-20261125T212314",
+  "adapter": {
+    "id": "mobile-maestro"
+  },
+  "persona": {
+    "id": "layla",
+    "profile": "Pharmacist, 39, reads Arabic, expects every screen to flow right to left.",
+    "goal": "Do the main task end to end and check that text, icons and arrows are mirrored.",
+    "locale": "ar-EG",
+    "context": {
+      "platform": "android",
+      "device": "Pixel 6, Android 13",
+      "fontScale": 1.15,
+      "theme": "light"
+    }
+  },
+  "params": [
+    {
+      "name": "TEXT_1",
+      "secret": true,
+      "description": "A text the agent typed"
+    }
+  ],
+  "invariants": [],
+  "steps": [
+    {
+      "id": "s1",
+      "action": {
+        "kind": "launchApp",
+        "appId": "org.localsend.localsend_app.debug",
+        "clearState": true
+      },
+      "checkpoints": [
+        {
+          "id": "ai-s1-home",
+          "check": {
+            "kind": "visible",
+            "target": {
+              "text": "الاستلام عبر رابط"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "action": {
+        "kind": "tapOn",
+        "target": {
+          "text": "إرسال علامة التبويب 2 من 3"
+        }
+      },
+      "checkpoints": [
+        {
+          "id": "ai-s2-send-tab",
+          "check": {
+            "kind": "visible",
+            "target": {
+              "text": "الأجهزة القريبة"
+            }
+          }
+        }
+      ],
+      "evidence": {
+        "screen": "01",
+        "point": [
+          540,
+          2232
+        ],
+        "bounds": [
+          360,
+          2127,
+          720,
+          2337
+        ],
+        "size": [
+          1080,
+          2400
+        ]
+      }
+    },
+    {
+      "id": "s3",
+      "action": {
+        "kind": "tapOn",
+        "target": {
+          "text": "نص"
+        }
+      },
+      "checkpoints": [
+        {
+          "id": "ai-s3-message-dialog",
+          "check": {
+            "kind": "visible",
+            "target": {
+              "text": "اكتب رسالة"
+            }
+          }
+        }
+      ],
+      "evidence": {
+        "screen": "02",
+        "point": [
+          882,
+          497
+        ],
+        "bounds": [
+          724,
+          412,
+          1041,
+          583
+        ],
+        "size": [
+          1080,
+          2400
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "action": {
+        "kind": "tapOn",
+        "target": {
+          "text": "رفض"
+        },
+        "at": "3%,90%"
+      },
+      "checkpoints": [],
+      "evidence": {
+        "screen": "03",
+        "point": [
+          540,
+          766
+        ],
+        "bounds": [
+          0,
+          0,
+          1080,
+          2400
+        ],
+        "size": [
+          1080,
+          2400
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "action": {
+        "kind": "eraseText"
+      },
+      "checkpoints": [],
+      "evidence": {
+        "screen": "03"
+      }
+    },
+    {
+      "id": "s6",
+      "action": {
+        "kind": "inputText",
+        "text": {
+          "param": "TEXT_1"
+        }
+      },
+      "checkpoints": [],
+      "evidence": {
+        "screen": "03"
+      }
+    },
+    {
+      "id": "s7",
+      "action": {
+        "kind": "tapOn",
+        "target": {
+          "text": "أكِّد"
+        }
+      },
+      "checkpoints": [
+        {
+          "id": "ai-s7-send-tab",
+          "check": {
+            "kind": "visible",
+            "target": {
+              "text": "الأجهزة القريبة"
+            }
+          }
+        },
+        {
+          "id": "ai-s7-selection-made",
+          "check": {
+            "kind": "visible",
+            "target": {
+              "text": "عدِّل"
+            }
+          }
+        }
+      ],
+      "evidence": {
+        "screen": "04",
+        "point": [
+          320,
+          955
+        ],
+        "bounds": [
+          236,
+          892,
+          404,
+          1018
+        ],
+        "size": [
+          1080,
+          2400
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "action": {
+        "kind": "tapOn",
+        "target": {
+          "text": "الإعدادات علامة التبويب 3 من 3"
+        }
+      },
+      "checkpoints": [
+        {
+          "id": "ai-s8-settings-tab",
+          "check": {
+            "kind": "visible",
+            "target": {
+              "text": "الإعدادات"
+            }
+          }
+        }
+      ],
+      "evidence": {
+        "screen": "05",
+        "point": [
+          180,
+          2232
+        ],
+        "bounds": [
+          0,
+          2127,
+          360,
+          2337
+        ],
+        "size": [
+          1080,
+          2400
+        ]
+      }
+    },
+    {
+      "id": "s9",
+      "action": {
+        "kind": "swipe",
+        "direction": "UP",
+        "from": "50%,75%",
+        "to": "50%,25%"
+      },
+      "checkpoints": [],
+      "evidence": {
+        "screen": "06",
+        "from": [
+          540,
+          1800
+        ],
+        "to": [
+          540,
+          600
+        ],
+        "size": [
+          1080,
+          2400
+        ]
+      }
+    }
+  ],
+  "evidence": {
+    "lastScreen": "07"
+  },
+  "provenance": {
+    "exploredAt": "2026-11-25T21:23:14Z",
+    "agent": "mobile-agent-testers",
+    "model": "claude-sonnet-5-5"
+  }
+}

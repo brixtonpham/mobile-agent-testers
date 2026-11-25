@@ -1,0 +1,222 @@
+{
+  "schema": "ecr.trace/0",
+  "id": "grace-20261125T215820",
+  "adapter": {
+    "id": "mobile-maestro"
+  },
+  "persona": {
+    "id": "grace",
+    "profile": "Retired nurse, 74, low vision, uses Android's largest font size (200%).",
+    "goal": "Read every screen and complete one task without zooming.",
+    "locale": "en-US",
+    "context": {
+      "platform": "android",
+      "device": "Pixel 7, Android 14, 200% font",
+      "fontScale": 2.0,
+      "theme": "light"
+    }
+  },
+  "params": [],
+  "invariants": [],
+  "steps": [
+    {
+      "id": "s1",
+      "action": {
+        "kind": "launchApp",
+        "appId": "org.localsend.localsend_app.debug",
+        "clearState": true
+      },
+      "checkpoints": [
+        {
+          "id": "ai-s1-home",
+          "check": {
+            "kind": "visible",
+            "target": {
+              "text": "Receive via link"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "action": {
+        "kind": "tapOn",
+        "target": {
+          "text": "Send Tab 2 of 3"
+        }
+      },
+      "checkpoints": [
+        {
+          "id": "ai-s2-send-tab",
+          "check": {
+            "kind": "visible",
+            "target": {
+              "text": "Nearby devices"
+            }
+          }
+        }
+      ],
+      "evidence": {
+        "screen": "01",
+        "point": [
+          540,
+          2232
+        ],
+        "bounds": [
+          360,
+          2127,
+          720,
+          2337
+        ],
+        "size": [
+          1080,
+          2400
+        ]
+      }
+    },
+    {
+      "id": "s3",
+      "action": {
+        "kind": "tapOn",
+        "target": {
+          "text": "File"
+        }
+      },
+      "checkpoints": [],
+      "evidence": {
+        "screen": "02",
+        "point": [
+          197,
+          410
+        ],
+        "bounds": [
+          39,
+          325,
+          356,
+          496
+        ],
+        "size": [
+          1080,
+          2400
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "action": {
+        "kind": "tapOn",
+        "target": {
+          "text": "ui.xml"
+        }
+      },
+      "checkpoints": [
+        {
+          "id": "ai-s4-send-tab",
+          "check": {
+            "kind": "visible",
+            "target": {
+              "text": "Nearby devices"
+            }
+          }
+        },
+        {
+          "id": "ai-s4-selection-made",
+          "check": {
+            "kind": "visible",
+            "target": {
+              "text": "Edit"
+            }
+          }
+        }
+      ],
+      "evidence": {
+        "screen": "03",
+        "point": [
+          288,
+          596
+        ],
+        "bounds": [
+          189,
+          546,
+          388,
+          646
+        ],
+        "size": [
+          1080,
+          2400
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "action": {
+        "kind": "tapOn",
+        "target": {
+          "text": "Settings Tab 3 of 3"
+        }
+      },
+      "checkpoints": [
+        {
+          "id": "ai-s5-settings-tab",
+          "check": {
+            "kind": "visible",
+            "target": {
+              "text": "Settings"
+            }
+          }
+        }
+      ],
+      "evidence": {
+        "screen": "04",
+        "point": [
+          900,
+          2232
+        ],
+        "bounds": [
+          720,
+          2127,
+          1080,
+          2337
+        ],
+        "size": [
+          1080,
+          2400
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "action": {
+        "kind": "swipe",
+        "direction": "UP",
+        "from": "50%,75%",
+        "to": "50%,25%"
+      },
+      "checkpoints": [],
+      "evidence": {
+        "screen": "05",
+        "from": [
+          540,
+          1800
+        ],
+        "to": [
+          540,
+          600
+        ],
+        "size": [
+          1080,
+          2400
+        ]
+      }
+    }
+  ],
+  "evidence": {
+    "lastScreen": "06"
+  },
+  "provenance": {
+    "exploredAt": "2026-11-25T21:58:20Z",
+    "agent": "mobile-agent-testers",
+    "model": "claude-sonnet-5-5"
+  }
+}
