@@ -49,6 +49,11 @@ else build_args || exit 1; case "$FW" in
   capacitor)
     npm_install; q npm run build --if-present; q npx cap sync ios || fail
     [ -f ios/App/Podfile ] && (cd ios/App && q pod install); xcbuild ios/App ;;
+  nativescript)
+    npm_install
+    command -v ns >/dev/null || q npm install -g nativescript || fail
+    q ns build ios ${BUILD_ARGV[@]+"${BUILD_ARGV[@]}"} || fail
+    OUT=$(find platforms/ios/build -maxdepth 2 -path '*iphonesimulator/*.app' -not -name '*Tests*' 2>/dev/null | head -1) ;;
   maui)
     TF=$(grep -ohE 'net[0-9.]+-ios' ./*.csproj | head -1)
     q dotnet workload install maui-ios && q dotnet build -f "$TF" -c Debug -p:RuntimeIdentifier=iossimulator-arm64 ${BUILD_ARGV[@]+"${BUILD_ARGV[@]}"} || fail
