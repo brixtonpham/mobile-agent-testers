@@ -317,6 +317,7 @@ jobs:
           THEME: ${{ matrix.theme }}
           INCREASE_CONTRAST: ${{ matrix.increase_contrast }}
           COLOR_FILTER: ${{ matrix.color_filter }}
+          NETWORK: ${{ matrix.network }}
           LOCALE: ${{ matrix.locale }}
           GEO: ${{ matrix.geo }}
           APP_ID: ${{ inputs.app_id }}

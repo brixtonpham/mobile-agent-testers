@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Slow and flaky networks (Android)**: optional `network` field in an Android persona's `device` (`slow` or `flaky`). `scripts/android/run_agent.sh` applies `adb emu network speed` and `adb emu network delay` (`edge` / `edge` for `slow`, `gsm` / `500:3000` for `flaky`) before the app launches and names the network condition in the agent's prompt. Kenji uses `flaky`.
 - **Color blindness filters**: optional `color_filter` field in a persona's `device` (`protanopia`, `deuteranopia` or `tritanopia`). `scripts/color_filter.py` applies the simulation matrix directly to screenshots in `screen.py` across Android, iOS and web (since SurfaceFlinger's display daltonizer does not affect `screencap`), and the agent's prompt names the filter. Felipe uses `deuteranopia`.
 - **A credit line in what you share**: `SUMMARY.md`, the draft issues and the Slack or Discord message now end with one line, "Tested with mobile-agent-testers", with a link to this repository. `SUMMARY_CREDIT=0` removes it everywhere.
 - **Share your work**: [docs/share.md](docs/share.md) lists the video and images you can reuse, a `tested with mobile-agent-testers` badge, starting points for a post and a showcase list. `CITATION.cff` adds GitHub's "Cite this repository" button.
