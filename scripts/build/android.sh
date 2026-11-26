@@ -35,6 +35,11 @@ else build_args || exit 1; case "$FW" in
     # Release APKs are unsigned in a fresh Capacitor project: the debug APK is self-contained
     npm_install; q npm run build --if-present; q npx cap sync android || fail
     (cd android && q ./gradlew assembleDebug --build-cache ${BUILD_ARGV[@]+"${BUILD_ARGV[@]}"}) || fail; OUT=$(apk android debug) ;;
+  nativescript)
+    npm_install
+    command -v ns >/dev/null || q npm install -g nativescript || fail
+    q ns build android ${BUILD_ARGV[@]+"${BUILD_ARGV[@]}"} || fail
+    OUT=$(apk platforms/android debug) ;;
   maui)
     TF=$(grep -ohE 'net[0-9.]+-android' ./*.csproj | head -1)
     q dotnet workload install maui-android && q dotnet publish -f "$TF" -c Release -p:AndroidPackageFormat=apk -o "$RUNNER_TEMP/maui" ${BUILD_ARGV[@]+"${BUILD_ARGV[@]}"} || fail

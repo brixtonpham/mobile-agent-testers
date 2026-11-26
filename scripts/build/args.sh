@@ -3,8 +3,8 @@
 # build_args input and the BUILD_ARGS secret (inputs of a public repo's runs are
 # public: keys go in the secret). They are added to the build command of both
 # platforms: `flutter build` for Flutter (--dart-define=API_URL=..., or
-# --dart-define-from-file=config.json), Gradle and xcodebuild for the others, and
-# dotnet for .NET MAUI. Quotes work like in a shell: --dart-define="NAME=two words".
+# --dart-define-from-file=config.json), `ns build` for NativeScript, Gradle and
+# xcodebuild for the others, and dotnet for .NET MAUI. Quotes work like in a shell: --dart-define="NAME=two words".
 # Sets BUILD_ARGV. Expand it as ${BUILD_ARGV[@]+"${BUILD_ARGV[@]}"}: an empty array
 # with set -u breaks the bash 3.2 of macOS otherwise.
 build_args() {
