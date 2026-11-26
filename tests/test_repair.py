@@ -15,10 +15,10 @@ import test_replay_set as base  # noqa: E402
 
 
 class Tools(base.Tools):
-    """Replays of the original trace fail at s2; a repaired one passes. The agent answers from a list."""
+    """Replays of the original trace fail at s3; a repaired one passes. The agent answers from a list."""
 
     def __init__(self, answers, refusals=(), **more):
-        super().__init__(outcomes={"open": "fail", "cut": "fail"}, stop="s2", **more)
+        super().__init__(outcomes={"open": "fail", "cut": "fail"}, **more)   # stops at s3
         self.answers, self.refusals, self.prompts = list(answers), list(refusals), []
 
     def __call__(self, args, cwd, env, timeout):
@@ -38,7 +38,7 @@ class Tools(base.Tools):
             self.envs.append(env)
             if self.refusals:
                 reason = self.refusals.pop(0)
-                return 1, f"REFUSED  t  step s2 ({reason})\n      no\n"
+                return 1, f"REFUSED  t  step s3 ({reason})\n      no\n"
             path = Path(args[args.index("repair") + 1])
             trace = json.loads(path.read_text())
             action = json.loads(args[args.index("--action") + 1])
@@ -46,7 +46,7 @@ class Tools(base.Tools):
                 if step["id"] == args[args.index("--step") + 1]:
                     step["action"] = action
             path.write_text(json.dumps(trace))
-            return 0, "repaired  t  step s2 (maestro)\n"
+            return 0, "repaired  t  step s3 (maestro)\n"
         if "replay" in args and "attempt-" in " ".join(args):
             self.calls.append(args)
             self.envs.append(env)
@@ -56,7 +56,7 @@ class Tools(base.Tools):
         return super().__call__(args, cwd, env, timeout)
 
 
-GOOD = '{"stepId": "s2", "action": {"kind": "tapOn", "target": {"text": "Send ›\\nTab 2 of 3"}}, "why": "renamed"}'
+GOOD = '{"stepId": "s3", "action": {"kind": "tapOn", "target": {"text": "Send ›\\nTab 2 of 3"}}, "why": "renamed"}'
 
 
 class Repair(unittest.TestCase):
@@ -75,12 +75,12 @@ class Repair(unittest.TestCase):
         printed, kept = self.run_repair(tools)
         attempt = kept["repairs"][0]["attempts"][0]
         self.assertEqual(attempt["result"], "accepted")
-        self.assertEqual(attempt["stop"], {"type": "target_not_found", "stepId": "s2"})
+        self.assertEqual(attempt["stop"], {"type": "target_not_found", "stepId": "s3"})
         self.assertEqual(attempt["action"], "tapOn by name")
         self.assertEqual(attempt["replaysAfter"], ["pass"] * 3)
         self.assertTrue(attempt["oraclesKept"])
         self.assertEqual(attempt["cost"]["price_usd"], 0.0123)
-        self.assertIn("repairs: anna-20261125T120000 attempt 1: stop target_not_found at step s2; proposed step s2, tapOn by name: accepted, "
+        self.assertIn("repairs: anna-20261125T120000 attempt 1: stop target_not_found at step s3; proposed step s3, tapOn by name: accepted, "
                       "then 3 of 3 replays pass, checks unchanged; agent $0.0123, 2 turns, 50 tokens out", printed)
         self.assertNotIn("Tab 2 of 3", printed)   # texts of the app stay private by default
         self.assertNotIn("Tab 2 of 3", json.dumps(kept))
@@ -88,7 +88,7 @@ class Repair(unittest.TestCase):
         self.assertEqual(private[0]["attempts"][0]["proposal"]["action"]["target"]["text"], "Send ›\nTab 2 of 3")
 
     def test_refusals_go_into_the_next_prompt_and_stop_after_three(self):
-        tools = Tools([GOOD, GOOD, '{"stepId": "s2", "action": null, "why": "a new step is needed"}'], refusals=["still_diverges", "not_local"])
+        tools = Tools([GOOD, GOOD, '{"stepId": "s3", "action": null, "why": "a new step is needed"}'], refusals=["still_diverges", "not_local"])
         printed, kept = self.run_repair(tools)
         results = [a["result"] for a in kept["repairs"][0]["attempts"]]
         self.assertEqual(results, ["refused: still_diverges", "refused: not_local", "no_proposal"])
@@ -121,7 +121,7 @@ class Repair(unittest.TestCase):
         self.assertNotIn("secret text", printed)
 
     def test_public_proposals_show_the_action_but_never_a_typed_text(self):
-        tools = Tools(['{"stepId": "s2", "action": {"kind": "inputText", "text": "typed by the agent"}}', GOOD], refusals=["still_diverges"])
+        tools = Tools(['{"stepId": "s3", "action": {"kind": "inputText", "text": "typed by the agent"}}', GOOD], refusals=["still_diverges"])
         os.environ["PUBLIC_PROPOSALS"] = "true"
         try:
             printed, kept = self.run_repair(tools)
@@ -130,7 +130,7 @@ class Repair(unittest.TestCase):
         self.assertNotIn("typed by the agent", printed)
         self.assertIn("(typed text left out)", printed)
         self.assertIn('"target":{"text":"Send ›\\nTab 2 of 3"}', printed)
-        self.assertEqual(kept["repairs"][0]["attempts"][1]["proposal"]["stepId"], "s2")
+        self.assertEqual(kept["repairs"][0]["attempts"][1]["proposal"]["stepId"], "s3")
 
     def test_no_repair_when_every_replay_gives_what_was_recorded(self):
         tools = base.Tools()
@@ -151,8 +151,8 @@ class Helpers(unittest.TestCase):
         self.assertNotEqual(repair.oracles_sha256(trace), before)
 
     def test_the_last_json_object_of_an_answer_is_the_proposal(self):
-        self.assertEqual(repair.last_json_object('Here: {"a": 1} then {"stepId": "s2", "action": {"kind": "hideKeyboard"}}'),
-                         {"stepId": "s2", "action": {"kind": "hideKeyboard"}})
+        self.assertEqual(repair.last_json_object('Here: {"a": 1} then {"stepId": "s3", "action": {"kind": "hideKeyboard"}}'),
+                         {"stepId": "s3", "action": {"kind": "hideKeyboard"}})
         self.assertIsNone(repair.last_json_object("no json here"))
 
 
