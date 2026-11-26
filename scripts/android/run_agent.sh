@@ -35,7 +35,7 @@ if [ "${INCREASE_CONTRAST:-false}" = true ]; then
 fi
 if [ -n "${COLOR_FILTER:-}" ]; then
   export COLOR_FILTER
-  A11Y="$A11Y, color filter $COLOR_FILTER"
+  A11Y="$A11Y, color filter $COLOR_FILTER (your screenshots show the colors as a person with $COLOR_FILTER sees them: report what can only be told apart by color, not the changed colors themselves)"
 fi
 adb emu geo fix "${GEO#*,}" "${GEO%,*}" >/dev/null 2>&1   # longitude first
 adb shell monkey -p "$APP_ID" -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1

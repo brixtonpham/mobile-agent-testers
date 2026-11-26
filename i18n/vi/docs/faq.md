@@ -32,7 +32,7 @@ Có. Chạy workflow từ một repo riêng tư, với `SOURCE_REPO_TOKEN` chỉ
 
 ## Tôi có thể tự tạo persona không?
 
-Có. Một persona là vài dòng trong [personas.json](../../../personas.json): thiết bị, phiên bản hệ điều hành, ngôn ngữ, cỡ chữ, chế độ tối, vị trí, họ là ai và họ cố làm gì. Hai tùy chọn trong `device`: `"increase_contrast": true` (Tăng độ tương phản trên iOS, chữ tương phản cao trên Android) và `"reduce_motion": true` (chỉ iOS: trình giả lập Android vốn đã tắt hiệu ứng chuyển động).
+Có. Một persona là vài dòng trong [personas.json](../../../personas.json): thiết bị, phiên bản hệ điều hành, ngôn ngữ, cỡ chữ, chế độ tối, vị trí, họ là ai và họ cố làm gì. Các tùy chọn trợ năng trong `device`: `"increase_contrast": true` (Tăng độ tương phản trên iOS, chữ tương phản cao trên Android), `"reduce_motion": true` (iOS và web: trình giả lập Android vốn đã tắt hiệu ứng chuyển động) và `"color_filter"` (`"protanopia"`, `"deuteranopia"` hoặc `"tritanopia"`, áp dụng lên ảnh chụp màn hình trên Android, iOS và web).
 
 ## Nó hay sai ở đâu?
 

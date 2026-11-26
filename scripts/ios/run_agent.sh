@@ -22,7 +22,7 @@ if [ "${REDUCE_MOTION:-false}" = true ]; then
 fi
 if [ -n "${COLOR_FILTER:-}" ]; then
   export COLOR_FILTER
-  A11Y="$A11Y, color filter $COLOR_FILTER"
+  A11Y="$A11Y, color filter $COLOR_FILTER (your screenshots show the colors as a person with $COLOR_FILTER sees them: report what can only be told apart by color, not the changed colors themselves)"
 fi
 xcrun simctl location "$UDID" set "$GEO" 2>/dev/null || true
 APP=$(find app -maxdepth 2 -name '*.app' -type d | head -1)

@@ -32,7 +32,7 @@
 
 ## 自分でペルソナを作れる？
 
-作れます。ペルソナは [personas.json](../../../personas.json) の数行です：端末、OS のバージョン、言語、文字サイズ、ダークモード、位置情報、どんな人で何をしようとしているか。 `device` には任意の設定が2つあります：`"increase_contrast": true`（iOS では「コントラストを上げる」、Android では高コントラストテキスト）と `"reduce_motion": true`（iOS のみ。Android エミュレーターはもともとアニメーションなしで動きます）。
+作れます。ペルソナは [personas.json](../../../personas.json) の数行です：端末、OS のバージョン、言語、文字サイズ、ダークモード、位置情報、どんな人で何をしようとしているか。 `device` には任意のアクセシビリティ設定があります：`"increase_contrast": true`（iOS では「コントラストを上げる」、Android では高コントラストテキスト）、`"reduce_motion": true`（iOS と Web。Android エミュレーターはもともとアニメーションなしで動きます）、`"color_filter"`（`"protanopia"`、`"deuteranopia"`、`"tritanopia"` のいずれか。Android、iOS、Web のスクリーンショットに適用されます）。
 
 ## 苦手なことは？
 

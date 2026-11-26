@@ -100,6 +100,12 @@ class ColorFilter(unittest.TestCase):
             self.assertIn("import color_filter", src, rel)
             self.assertIn("color_filter.apply(", src, rel)
 
+    def test_the_prompt_says_what_the_filter_is_for(self):
+        # Without it, an agent reports the changed colors as a defect of the app
+        for rel in ("scripts/android/run_agent.sh", "scripts/ios/run_agent.sh", "scripts/web/run_agent.sh"):
+            src = (ROOT / rel).read_text(encoding="utf-8")
+            self.assertIn("report what can only be told apart by color, not the changed colors themselves", src, rel)
+
 
 if __name__ == "__main__":
     unittest.main()

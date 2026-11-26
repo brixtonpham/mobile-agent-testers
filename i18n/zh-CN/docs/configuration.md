@@ -11,7 +11,7 @@ gh workflow run agent-testers.yml -f source_repo=you/app -f app_id=com.you.app \
 |---|---|
 | `source_repo`, `ref` | 应用仓库和分支（留空 = 本仓库）。私有仓库：添加一个只读的 `SOURCE_REPO_TOKEN` secret |
 | `app_dir`, `app_id` | 应用目录，Android 包名 / iOS bundle id（如果另一个平台用的是别的 id，会从它的构建产物中读取） |
-| `android_personas`, `ios_personas` | [personas.json](../../../personas.json) 中的 id，每个角色一台手机；`all` 表示全部，`none` 表示跳过该平台。内置 20 个角色：14 种语言、从右到左、平板、从小号到最大辅助功能字号 |
+| `android_personas`, `ios_personas` | [personas.json](../../../personas.json) 中的 id，每个角色一台手机；`all` 表示全部，`none` 表示跳过该平台。内置 20 个角色：14 种语言、从右到左、平板、从小号到最大辅助功能字号、增强对比度、减弱动态效果和色盲滤镜 |
 | `brief` | 给智能体的说明：[AGENT_BRIEF.md](../../../AGENT_BRIEF.md) 用于探索，[briefs/improve.md](../../../briefs/improve.md) 用于改进报告，也可以用你自己写的来测某个功能 |
 | `bug_report` | 要复现的缺陷，而不是自由探索：一个 issue（`owner/repo#123` 或它的链接），或者直接写步骤。每个智能体在自己的设备上照着做（[briefs/reproduce.md](../../../briefs/reproduce.md)） |
 | `web_personas`, `web_url` | 网页角色的 id（`tom`、`amelie`、`lena`、`arjun`）、`all` 或 `none`（默认），以及要测试的网站地址。其他平台保持默认值，所以只测网页时请设置 `android_personas=none` 和 `ios_personas=none`。 |

@@ -29,7 +29,7 @@ A11Y=""
 [ "${INCREASE_CONTRAST:-false}" = true ] && A11Y="$A11Y, increased contrast on"
 if [ -n "${COLOR_FILTER:-}" ]; then
   export COLOR_FILTER
-  A11Y="$A11Y, color filter $COLOR_FILTER"
+  A11Y="$A11Y, color filter $COLOR_FILTER (your screenshots show the colors as a person with $COLOR_FILTER sees them: report what can only be told apart by color, not the changed colors themselves)"
 fi
 # The agent (another model API if llm_base_url is set). A website is untrusted input that can talk to the agent
 # (page text, console errors), so its file tools stay in this checkout: read here, write only under results/.

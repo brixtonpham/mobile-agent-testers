@@ -11,7 +11,7 @@ gh workflow run agent-testers.yml -f source_repo=you/app -f app_id=com.you.app \
 |---|---|
 | `source_repo`, `ref` | Repositorio y rama de la app (vacío = este repositorio). Repositorio privado: añade un secret `SOURCE_REPO_TOKEN` de solo lectura |
 | `app_dir`, `app_id` | Carpeta de la app, paquete de Android / bundle id de iOS (si la otra plataforma usa otro id, se lee de su app compilada) |
-| `android_personas`, `ios_personas` | Ids de [personas.json](../../../personas.json), un teléfono cada una, `all`, o `none` para saltar una plataforma. 20 listas: 14 idiomas, derecha a izquierda, tabletas, texto desde pequeño hasta el mayor tamaño de accesibilidad |
+| `android_personas`, `ios_personas` | Ids de [personas.json](../../../personas.json), un teléfono cada una, `all`, o `none` para saltar una plataforma. 20 listas: 14 idiomas, derecha a izquierda, tabletas, texto desde pequeño hasta el mayor tamaño de accesibilidad, contraste aumentado, movimiento reducido y un filtro de daltonismo |
 | `brief` | Instrucciones para los agentes: [AGENT_BRIEF.md](../../../AGENT_BRIEF.md) para explorar, [briefs/improve.md](../../../briefs/improve.md) para un informe de mejoras, o el tuyo para una función |
 | `bug_report` | Un error que reproducir en lugar de explorar: un issue (`owner/repo#123` o su URL) o los pasos en texto. Cada agente lo sigue en su propio dispositivo ([briefs/reproduce.md](../../../briefs/reproduce.md)) |
 | `web_personas`, `web_url` | Ids de personas web (`tom`, `amelie`, `lena`, `arjun`), `all`, o `none` (por defecto), y la dirección del sitio que probar. Las otras plataformas conservan sus valores por defecto: pon `android_personas=none` y `ios_personas=none` para una ejecución solo web. |

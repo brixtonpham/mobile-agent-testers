@@ -11,7 +11,7 @@ gh workflow run agent-testers.yml -f source_repo=you/app -f app_id=com.you.app \
 |---|---|
 | `source_repo`, `ref` | Repo của ứng dụng và branch (để trống = repo này). Repo riêng tư: thêm secret `SOURCE_REPO_TOKEN` chỉ đọc |
 | `app_dir`, `app_id` | Thư mục ứng dụng, package Android / bundle id iOS (nếu nền tảng còn lại dùng id khác, nó được đọc từ ứng dụng đã build của nền tảng đó) |
-| `android_personas`, `ios_personas` | Các id từ [personas.json](../../../personas.json), mỗi id một điện thoại, `all`, hoặc `none` để bỏ qua một nền tảng. 20 persona có sẵn: 14 ngôn ngữ, chiều phải sang trái, máy tính bảng, cỡ chữ từ nhỏ đến cỡ trợ năng lớn nhất |
+| `android_personas`, `ios_personas` | Các id từ [personas.json](../../../personas.json), mỗi id một điện thoại, `all`, hoặc `none` để bỏ qua một nền tảng. 20 persona có sẵn: 14 ngôn ngữ, chiều phải sang trái, máy tính bảng, cỡ chữ từ nhỏ đến cỡ trợ năng lớn nhất, tăng độ tương phản, giảm chuyển động và một bộ lọc mù màu |
 | `brief` | Chỉ dẫn cho agent: [AGENT_BRIEF.md](../../../AGENT_BRIEF.md) để khám phá, [briefs/improve.md](../../../briefs/improve.md) cho một báo cáo cải tiến, hoặc bản của riêng bạn cho một tính năng |
 | `bug_report` | Một bug cần tái hiện thay vì khám phá: một issue (`owner/repo#123` hoặc URL của nó) hoặc các bước dạng văn bản. Mỗi agent làm theo trên thiết bị của riêng mình ([briefs/reproduce.md](../../../briefs/reproduce.md)) |
 | `web_personas`, `web_url` | Id của các persona web (`tom`, `amelie`, `lena`, `arjun`), `all`, hoặc `none` (mặc định), và địa chỉ của website cần kiểm thử. Các nền tảng khác giữ giá trị mặc định, nên hãy đặt `android_personas=none` và `ios_personas=none` khi chỉ chạy web. |
