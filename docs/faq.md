@@ -32,7 +32,7 @@ Yes. Run the workflow from a private repo, with a read-only `SOURCE_REPO_TOKEN` 
 
 ## Can I make my own personas?
 
-Yes. A persona is a few lines in [personas.json](../personas.json): device, OS version, language, text size, dark mode, location, who they are and what they try to do. Two optional switches in `device`: `"increase_contrast": true` (Increase Contrast on iOS, high contrast text on Android) and `"reduce_motion": true` (iOS only: Android emulators already run with animations off).
+Yes. A persona is a few lines in [personas.json](../personas.json): device, OS version, language, text size, dark mode, location, who they are and what they try to do. Optional accessibility settings in `device`: `"increase_contrast": true` (Increase Contrast on iOS, high contrast text on Android), `"reduce_motion": true` (iOS and web: Android emulators already run with animations off) and `"color_filter"` (`"protanopia"`, `"deuteranopia"` or `"tritanopia"`, applied to screenshots on Android, iOS and web).
 
 ## What does it get wrong?
 

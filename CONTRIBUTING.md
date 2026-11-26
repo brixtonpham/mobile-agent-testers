@@ -41,7 +41,7 @@ On a self-hosted runner with a phone plugged in over USB. [scripts/android/run_a
 
 ### New personas
 
-Personas are a few lines in [personas.json](personas.json); the run scripts apply their settings to the phone (text size, dark mode, language and location today). Increased contrast and reduced motion are in (`increase_contrast`, `reduce_motion`). Ideas still open, asked for by users: color blindness filters, a slow or flaky network.
+Personas are a few lines in [personas.json](personas.json); the run scripts apply their settings to the phone (text size, dark mode, language and location today). Increased contrast, reduced motion and color blindness filters are in (`increase_contrast`, `reduce_motion`, `color_filter`). Ideas still open, asked for by users: a slow or flaky network.
 
 On Android, these are `adb shell settings put` calls (`secure high_text_contrast_enabled`, the `global` animation scales, `secure accessibility_display_daltonizer`) and the emulator console for the network (`adb emu network speed` and `network delay`). On iOS, check what `xcrun simctl ui` supports in the Xcode of the runner. Add a test in [tests/test_matrix.py](tests/test_matrix.py) for the new fields.
 

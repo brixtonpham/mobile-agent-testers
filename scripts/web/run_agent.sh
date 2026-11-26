@@ -27,6 +27,10 @@ fi
 A11Y=""
 [ "${REDUCE_MOTION:-false}" = true ] && A11Y="$A11Y, reduce motion on"
 [ "${INCREASE_CONTRAST:-false}" = true ] && A11Y="$A11Y, increased contrast on"
+if [ -n "${COLOR_FILTER:-}" ]; then
+  export COLOR_FILTER
+  A11Y="$A11Y, color filter $COLOR_FILTER"
+fi
 # The agent (another model API if llm_base_url is set). A website is untrusted input that can talk to the agent
 # (page text, console errors), so its file tools stay in this checkout: read here, write only under results/.
 # shellcheck disable=SC1091  # sourced from the repo root, like the phone scripts

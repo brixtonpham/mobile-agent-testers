@@ -74,11 +74,11 @@
   {
     "id": "felipe",
     "platform": "android",
-    "profile": "Delivery rider, 27, reads Portuguese, cheap phone, taps fast between deliveries.",
+    "profile": "Delivery rider, 27, reads Portuguese, red-green color blind, cheap phone, taps fast between deliveries.",
     "goal": "Get to the main feature as fast as possible and use it twice in a row.",
     "locale": "pt-BR",
     "geo": [-23.5505, -46.6333],
-    "device": {"name": "Pixel 3a, Android 12", "profile": "pixel_3a", "android_api": 31, "font_scale": 1.15, "theme": "light"}
+    "device": {"name": "Pixel 3a, Android 12", "profile": "pixel_3a", "android_api": 31, "font_scale": 1.15, "theme": "light", "color_filter": "deuteranopia"}
   },
   {
     "id": "mehmet",

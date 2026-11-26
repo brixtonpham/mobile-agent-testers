@@ -20,6 +20,10 @@ if [ "${REDUCE_MOTION:-false}" = true ]; then
   xcrun simctl spawn "$UDID" defaults write com.apple.Accessibility ReduceMotionEnabled -bool true \
     && A11Y="$A11Y, reduce motion on" || echo "Could not set reduce motion: persona runs without it"
 fi
+if [ -n "${COLOR_FILTER:-}" ]; then
+  export COLOR_FILTER
+  A11Y="$A11Y, color filter $COLOR_FILTER"
+fi
 xcrun simctl location "$UDID" set "$GEO" 2>/dev/null || true
 APP=$(find app -maxdepth 2 -name '*.app' -type d | head -1)
 xcrun simctl install "$UDID" "$APP" || { echo "install failed"; exit 1; }

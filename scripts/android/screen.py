@@ -11,6 +11,7 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import a11y  # noqa: E402
+import color_filter  # noqa: E402
 
 
 def adb(*a, raw=False):
@@ -22,7 +23,7 @@ out, nn = Path(sys.argv[1]), sys.argv[2]
 out.mkdir(parents=True, exist_ok=True)
 png = adb("exec-out", "screencap", "-p", raw=True)
 png = png[png.find(b"\x89PNG"):] if b"\x89PNG" in png else png  # foldables print a warning first
-img = Image.open(io.BytesIO(png)).convert("RGB")
+img = color_filter.apply(Image.open(io.BytesIO(png)).convert("RGB"))
 w, h = img.size
 img.resize((w // 2, h // 2)).save(out / f"{nn}.png")
 print(f"screenshot: {out}/{nn}.png (screen {w}x{h}; image is half size: multiply positions read on it by 2)")

@@ -6,11 +6,13 @@ scrolled, what went wrong since the previous screenshot (page errors, failed req
 links to blocked hosts, new tabs) and an accessibility check (controls with no name,
 touch targets under 24 CSS px)."""
 
+import os
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import a11y
+import color_filter
 
 KINDS = ("field", "button", "text")
 
@@ -59,4 +61,9 @@ if __name__ == "__main__":
     state = call("screen", str(png.resolve()))
     if state.get("error"):
         raise SystemExit(f"no screenshot: {state['error']}")
+    if os.environ.get("COLOR_FILTER"):
+        from PIL import Image
+
+        with Image.open(png) as raw_img:
+            color_filter.apply(raw_img.convert("RGB")).save(png)
     print("\n".join(lines(state, png)))

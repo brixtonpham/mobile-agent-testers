@@ -4,6 +4,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -15,15 +16,16 @@ IOS_TEXT_SIZES = {"extra-small", "small", "medium", "large", "extra-large", "ext
                   "extra-extra-extra-large", "accessibility-medium", "accessibility-large",
                   "accessibility-extra-large", "accessibility-extra-extra-large",
                   "accessibility-extra-extra-extra-large"}
+COLOR_FILTERS = ("protanopia", "deuteranopia", "tritanopia")
 
 
-def matrix(platform, personas):
+def matrix(platform, personas, cwd=ROOT):
     env = dict(os.environ, PLATFORM=platform, PERSONAS=personas)
-    return subprocess.run([sys.executable, "scripts/matrix.py"], cwd=ROOT, env=env, capture_output=True, text=True)
+    return subprocess.run([sys.executable, str(ROOT / "scripts/matrix.py")], cwd=cwd, env=env, capture_output=True, text=True)
 
 
-def rows(platform, personas):
-    out = matrix(platform, personas)
+def rows(platform, personas, cwd=ROOT):
+    out = matrix(platform, personas, cwd=cwd)
     if out.returncode:
         raise AssertionError(out.stderr)
     key, _, value = out.stdout.strip().partition("=")
@@ -64,31 +66,65 @@ class Matrix(unittest.TestCase):
     def test_accessibility_settings_default_to_off(self):
         ids = {"android": [], "ios": [], "web": []}
         for p in PERSONAS:
-            if not p["device"].get("increase_contrast") and not p["device"].get("reduce_motion"):
+            d = p["device"]
+            if not d.get("increase_contrast") and not d.get("reduce_motion") and not d.get("color_filter"):
                 ids[p["platform"]].append(p["id"])
         for platform in ("android", "ios", "web"):
             for row in rows(platform, ids[platform][0]):
                 self.assertEqual(row["increase_contrast"], "false")
+                self.assertEqual(row["color_filter"], "")
                 if platform in ("ios", "web"):
                     self.assertEqual(row["reduce_motion"], "false")
 
     def test_accessibility_settings_reach_the_row(self):
+        saw_color_filter = False
         for p in PERSONAS:
             d = p["device"]
-            if not (d.get("increase_contrast") or d.get("reduce_motion")):
+            if not (d.get("increase_contrast") or d.get("reduce_motion") or d.get("color_filter")):
                 continue
             with self.subTest(p["id"]):
                 row = rows(p["platform"], p["id"])[0]
                 self.assertEqual(row["increase_contrast"], "true" if d.get("increase_contrast") else "false")
+                self.assertEqual(row["color_filter"], d.get("color_filter", ""))
                 if p["platform"] in ("ios", "web"):
                     self.assertEqual(row["reduce_motion"], "true" if d.get("reduce_motion") else "false")
+                if d.get("color_filter"):
+                    saw_color_filter = True
+        self.assertTrue(saw_color_filter, "expected at least one persona with color_filter")
+
+    def test_color_filter_values_work_across_platforms_and_reject_bad_values(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            pfile = Path(tmp) / "personas.json"
+            samples = [
+                {"id": f"{plat}_{f}", "platform": plat, "device": {"color_filter": f}}
+                for plat in ("android", "ios", "web")
+                for f in COLOR_FILTERS
+            ] + [
+                {"id": "a_bad", "platform": "android", "device": {"color_filter": "monochrome"}},
+                {"id": "a_int", "platform": "android", "device": {"color_filter": 0}},
+                {"id": "i_bad", "platform": "ios", "device": {"color_filter": "grayscale"}},
+            ]
+            pfile.write_text(json.dumps(samples), encoding="utf-8")
+            for plat in ("android", "ios", "web"):
+                for f in COLOR_FILTERS:
+                    row = rows(plat, f"{plat}_{f}", cwd=tmp)[0]
+                    self.assertEqual(row["color_filter"], f)
+            for plat, pid in (("android", "a_bad"), ("android", "a_int"), ("ios", "i_bad")):
+                out = matrix(plat, pid, cwd=tmp)
+                self.assertNotEqual(out.returncode, 0)
+                self.assertIn("Unknown color_filter", out.stderr)
 
     def test_run_scripts_apply_the_accessibility_settings(self):
         ios = (ROOT / "scripts/ios/run_agent.sh").read_text(encoding="utf-8")
         android = (ROOT / "scripts/android/run_agent.sh").read_text(encoding="utf-8")
+        web_run = (ROOT / "scripts/web/run_agent.sh").read_text(encoding="utf-8")
         self.assertIn('simctl ui "$UDID" increase_contrast enabled', ios)
         self.assertIn("com.apple.Accessibility ReduceMotionEnabled -bool true", ios)
         self.assertIn("settings put secure high_text_contrast_enabled 1", android)
+        for script in (android, ios, web_run):
+            self.assertIn("color filter $COLOR_FILTER", script)
+        for plat in ("android", "ios", "web"):
+            self.assertIn("COLOR_FILTER: ${{ matrix.color_filter }}", job(plat))
         # Before the app starts, so it reads them at launch
         self.assertLess(ios.index("increase_contrast"), ios.index("simctl launch"))
         self.assertLess(ios.index("ReduceMotionEnabled"), ios.index("simctl launch"))
@@ -134,6 +170,8 @@ class Personas(unittest.TestCase):
                 if p["platform"] == "android":
                     # Animations are off on every emulator already (disable-animations)
                     self.assertNotIn("reduce_motion", d)
+                if "color_filter" in d:
+                    self.assertIn(d["color_filter"], COLOR_FILTERS)
                 if p["platform"] == "web":
                     # A Playwright device name (tests/test_web.py checks them when Playwright is installed)
                     self.assertTrue(d["emulate"] and d["name"])

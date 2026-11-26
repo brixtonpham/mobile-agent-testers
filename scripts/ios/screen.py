@@ -10,6 +10,7 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import a11y  # noqa: E402
+import color_filter  # noqa: E402
 
 UDID, APP = os.environ["UDID"], os.environ.get("APP_ID", "")
 
@@ -42,7 +43,7 @@ except json.JSONDecodeError:
     tree = []
 els = []
 walk(tree, els)
-img = Image.open(raw).convert("RGB")
+img = color_filter.apply(Image.open(raw).convert("RGB"))
 memo = Path(os.environ.get("RUNNER_TEMP", "/tmp")) / "width_points"
 root = tree[0] if isinstance(tree, list) and tree else tree
 wpt = int((root.get("frame") or {}).get("width", 0)) if isinstance(root, dict) else 0
