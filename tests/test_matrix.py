@@ -17,6 +17,7 @@ IOS_TEXT_SIZES = {"extra-small", "small", "medium", "large", "extra-large", "ext
                   "accessibility-extra-large", "accessibility-extra-extra-large",
                   "accessibility-extra-extra-extra-large"}
 COLOR_FILTERS = ("protanopia", "deuteranopia", "tritanopia")
+NETWORK_CONDITIONS = ("slow", "flaky")
 
 
 def matrix(platform, personas, cwd=ROOT):
@@ -67,12 +68,14 @@ class Matrix(unittest.TestCase):
         ids = {"android": [], "ios": [], "web": []}
         for p in PERSONAS:
             d = p["device"]
-            if not d.get("increase_contrast") and not d.get("reduce_motion") and not d.get("color_filter"):
+            if not d.get("increase_contrast") and not d.get("reduce_motion") and not d.get("color_filter") and not d.get("network"):
                 ids[p["platform"]].append(p["id"])
         for platform in ("android", "ios", "web"):
             for row in rows(platform, ids[platform][0]):
                 self.assertEqual(row["increase_contrast"], "false")
                 self.assertEqual(row["color_filter"], "")
+                if platform == "android":
+                    self.assertEqual(row["network"], "")
                 if platform in ("ios", "web"):
                     self.assertEqual(row["reduce_motion"], "false")
 
@@ -135,6 +138,54 @@ class Matrix(unittest.TestCase):
         self.assertIn('contrast="more" if env.get("INCREASE_CONTRAST") == "true"', web)
         self.assertLess(web.index("reduced_motion="), web.index("new_page()"))
 
+    def test_network_reaches_the_row_and_rejects_bad_values(self):
+        with_net = [p for p in PERSONAS if p["device"].get("network")]
+        self.assertTrue(with_net, "expected at least one persona with network")
+        for p in with_net:
+            row = rows(p["platform"], p["id"])[0]
+            self.assertEqual(row["network"], p["device"]["network"])
+
+        with tempfile.TemporaryDirectory() as tmp:
+            pfile = Path(tmp) / "personas.json"
+            samples = [
+                {"id": f"a_{n}", "platform": "android", "device": {"network": n}}
+                for n in NETWORK_CONDITIONS
+            ] + [
+                {"id": "a_default", "platform": "android", "device": {}},
+                {"id": "a_empty", "platform": "android", "device": {"network": ""}},
+                {"id": "a_bad", "platform": "android", "device": {"network": "offline"}},
+                {"id": "a_int", "platform": "android", "device": {"network": 0}},
+                {"id": "a_bool", "platform": "android", "device": {"network": True}},
+                {"id": "i_slow", "platform": "ios", "device": {"network": "slow"}},
+                {"id": "w_flaky", "platform": "web", "device": {"network": "flaky"}},
+            ]
+            pfile.write_text(json.dumps(samples), encoding="utf-8")
+            for n in NETWORK_CONDITIONS:
+                self.assertEqual(rows("android", f"a_{n}", cwd=tmp)[0]["network"], n)
+            self.assertEqual(rows("android", "a_default", cwd=tmp)[0]["network"], "")
+            self.assertEqual(rows("android", "a_empty", cwd=tmp)[0]["network"], "")
+            for pid in ("a_bad", "a_int", "a_bool"):
+                out = matrix("android", pid, cwd=tmp)
+                self.assertNotEqual(out.returncode, 0)
+                self.assertIn("Unknown network", out.stderr)
+            for plat, pid in (("ios", "i_slow"), ("web", "w_flaky")):
+                out = matrix(plat, pid, cwd=tmp)
+                self.assertNotEqual(out.returncode, 0)
+                self.assertIn("Android-only", out.stderr)
+
+    def test_android_run_script_applies_network_condition(self):
+        android = (ROOT / "scripts/android/run_agent.sh").read_text(encoding="utf-8")
+        self.assertIn("NETWORK: ${{ matrix.network }}", job("android"))
+        self.assertIn('adb emu network speed "$NET_SPEED"', android)
+        self.assertIn('adb emu network delay "$NET_DELAY"', android)
+        self.assertIn('slow)  NET_SPEED="edge"; NET_DELAY="edge"', android)
+        self.assertIn('flaky) NET_SPEED="gsm";  NET_DELAY="500:3000"', android)
+        # Applied after the APK is installed and before the app launches
+        self.assertLess(android.index("adb install"), android.index("adb emu network speed"))
+        self.assertLess(android.index("adb emu network delay"), android.index("monkey -p"))
+        # Prompt says what the condition is for so normal loading time is not flagged as a bug
+        self.assertIn("report spinners that never stop, double submits or errors with no message, not normal loading time", android)
+
     def test_rows_have_every_key_the_jobs_read(self):
         for platform in ("android", "ios", "web"):
             used = set(re.findall(r"matrix\.([a-z_]+)", job(platform)))
@@ -172,6 +223,9 @@ class Personas(unittest.TestCase):
                     self.assertNotIn("reduce_motion", d)
                 if "color_filter" in d:
                     self.assertIn(d["color_filter"], COLOR_FILTERS)
+                if "network" in d:
+                    self.assertEqual(p["platform"], "android")
+                    self.assertIn(d["network"], NETWORK_CONDITIONS)
                 if p["platform"] == "web":
                     # A Playwright device name (tests/test_web.py checks them when Playwright is installed)
                     self.assertTrue(d["emulate"] and d["name"])

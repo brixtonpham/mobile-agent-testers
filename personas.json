@@ -29,11 +29,11 @@
   {
     "id": "kenji",
     "platform": "android",
-    "profile": "Office worker, 29, reads Japanese, uses the app one-handed on the train.",
+    "profile": "Office worker, 29, reads Japanese, uses the app one-handed on the train, flaky connection.",
     "goal": "Finish the main task in short sessions, leaving the app and coming back.",
     "locale": "ja-JP",
     "geo": [35.6762, 139.6503],
-    "device": {"name": "Pixel 4, Android 11", "profile": "pixel_4", "android_api": 30, "font_scale": 1.0, "theme": "dark"}
+    "device": {"name": "Pixel 4, Android 11", "profile": "pixel_4", "android_api": 30, "font_scale": 1.0, "theme": "dark", "network": "flaky"}
   },
   {
     "id": "grace",
