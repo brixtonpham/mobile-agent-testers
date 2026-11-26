@@ -34,6 +34,7 @@ gh workflow run agent-testers.yml -f source_repo=you/app -f app_id=com.you.app \
 | ネイティブ Kotlin / Java、Swift / Objective-C | Gradle debug | Xcode, arm64 |
 | Kotlin Multiplatform | Gradle debug | iOS アプリの Xcode プロジェクト |
 | Capacitor / Ionic | `cap sync` 後に Gradle debug | `cap sync` 後に Xcode |
+| NativeScript（ベータ） | `ns build android`（debug） | `ns build ios`（シミュレーター） |
 | .NET MAUI（ベータ） | `dotnet publish` | `iossimulator-arm64` 向けの `dotnet build` |
 | その他すべて | `android_build` + `apk_path` | `ios_build` + `ios_app_path` |
 

@@ -34,6 +34,7 @@ gh workflow run agent-testers.yml -f source_repo=you/app -f app_id=com.you.app \
 | Native Kotlin / Java, Swift / Objective-C | Gradle debug | Xcode, arm64 |
 | Kotlin Multiplatform | Gradle debug | iOS uygulamasının Xcode projesi |
 | Capacitor / Ionic | `cap sync` sonrasında Gradle debug | `cap sync` sonrasında Xcode |
+| NativeScript (beta) | `ns build android` (debug) | `ns build ios` (simülatör) |
 | .NET MAUI (beta) | `dotnet publish` | `iossimulator-arm64` için `dotnet build` |
 | Diğerleri | `android_build` + `apk_path` | `ios_build` + `ios_app_path` |
 
