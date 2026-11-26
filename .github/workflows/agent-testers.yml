@@ -27,7 +27,7 @@ on:
         description: Android package / iOS bundle id (if a platform uses another id, the one inside its built app is used)
         default: com.example.tinytodo
       framework:
-        description: auto, flutter, expo, react-native, capacitor, kmp, native or maui
+        description: auto, flutter, expo, react-native, capacitor, nativescript, kmp, native or maui
         default: auto
       android_build:
         description: "Custom Android build command or prebuilt download (optional, then set apk_path)"

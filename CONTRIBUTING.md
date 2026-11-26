@@ -55,7 +55,7 @@ The workflow is written for GitHub Actions (job matrix, macOS runners, android-e
 
 ### More build systems
 
-Framework detection is in [scripts/build/detect.sh](scripts/build/detect.sh), and each framework is one `case` in [scripts/build/android.sh](scripts/build/android.sh) and [scripts/build/ios.sh](scripts/build/ios.sh). NativeScript, Unity or Godot would each be one more case, tested with a stand-in for the build tool.
+Framework detection is in [scripts/build/detect.sh](scripts/build/detect.sh), and each framework is one `case` in [scripts/build/android.sh](scripts/build/android.sh) and [scripts/build/ios.sh](scripts/build/ios.sh). Unity or Godot would each be one more case, tested with a stand-in for the build tool.
 
 ### Translations
 
