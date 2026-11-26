@@ -40,12 +40,14 @@ fi
 if [ -n "${NETWORK:-}" ]; then
   case "$NETWORK" in
     slow)  NET_SPEED="edge"; NET_DELAY="edge" ;;
-    flaky) NET_SPEED="gsm";  NET_DELAY="500:3000" ;;
+    flaky) NET_SPEED="edge"; NET_DELAY="500:3000" ;;   # same speed as slow, replies come 0.5 to 3 s late: gsm speed (14.4 kbit/s) left the app as good as offline
     *)     NET_SPEED="";     NET_DELAY="" ;;
   esac
   if [ -n "$NET_SPEED" ]; then
     if adb emu network speed "$NET_SPEED" >/dev/null 2>&1 && adb emu network delay "$NET_DELAY" >/dev/null 2>&1; then
       A11Y="$A11Y, $NETWORK network (the phone is on a $NETWORK connection: report spinners that never stop, double submits or errors with no message, not normal loading time)"
+      echo "Network $NETWORK, as the emulator reports it:"
+      adb emu network status 2>/dev/null | grep -E 'speed|latency' || true
     else
       adb emu network speed full >/dev/null 2>&1 || true
       adb emu network delay none >/dev/null 2>&1 || true

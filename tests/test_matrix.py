@@ -179,7 +179,9 @@ class Matrix(unittest.TestCase):
         self.assertIn('adb emu network speed "$NET_SPEED"', android)
         self.assertIn('adb emu network delay "$NET_DELAY"', android)
         self.assertIn('slow)  NET_SPEED="edge"; NET_DELAY="edge"', android)
-        self.assertIn('flaky) NET_SPEED="gsm";  NET_DELAY="500:3000"', android)
+        self.assertIn('flaky) NET_SPEED="edge"; NET_DELAY="500:3000"', android)
+        # The job log shows what the emulator applied
+        self.assertIn("adb emu network status", android)
         # Applied after the APK is installed and before the app launches
         self.assertLess(android.index("adb install"), android.index("adb emu network speed"))
         self.assertLess(android.index("adb emu network delay"), android.index("monkey -p"))

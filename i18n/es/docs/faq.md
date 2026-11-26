@@ -32,7 +32,7 @@ Sí. Ejecuta el workflow desde un repositorio privado, con un `SOURCE_REPO_TOKEN
 
 ## ¿Puedo crear mis propias personas?
 
-Sí. Una persona son unas pocas líneas en [personas.json](../../../personas.json): dispositivo, versión del sistema, idioma, tamaño de texto, modo oscuro, ubicación, quién es y qué intenta hacer. Opciones de accesibilidad en `device`: `"increase_contrast": true` (Aumentar contraste en iOS, texto de alto contraste en Android), `"reduce_motion": true` (iOS y web: los emuladores Android ya corren sin animaciones) y `"color_filter"` (`"protanopia"`, `"deuteranopia"` o `"tritanopia"`, aplicado a las capturas de pantalla en Android, iOS y web).
+Sí. Una persona son unas pocas líneas en [personas.json](../../../personas.json): dispositivo, versión del sistema, idioma, tamaño de texto, modo oscuro, ubicación, quién es y qué intenta hacer. Opciones en `device`: `"increase_contrast": true` (Aumentar contraste en iOS, texto de alto contraste en Android), `"reduce_motion": true` (iOS y web: los emuladores Android ya corren sin animaciones), `"color_filter"` (`"protanopia"`, `"deuteranopia"` o `"tritanopia"`, aplicado a las capturas de pantalla en Android, iOS y web) y `"network"` (`"slow"` o `"flaky"`, solo en el emulador Android).
 
 ## ¿En qué se equivoca?
 

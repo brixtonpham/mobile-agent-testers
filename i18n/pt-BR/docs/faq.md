@@ -32,7 +32,7 @@ Sim. Rode o workflow a partir de um repositório privado, com um `SOURCE_REPO_TO
 
 ## Posso criar minhas próprias personas?
 
-Sim. Uma persona são algumas linhas no [personas.json](../../../personas.json): aparelho, versão do sistema, idioma, tamanho do texto, modo escuro, localização, quem ela é e o que tenta fazer. Opções de acessibilidade em `device`: `"increase_contrast": true` (Aumentar contraste no iOS, texto em alto contraste no Android), `"reduce_motion": true` (iOS e web: os emuladores Android já rodam sem animações) e `"color_filter"` (`"protanopia"`, `"deuteranopia"` ou `"tritanopia"`, aplicado às capturas de tela no Android, iOS e web).
+Sim. Uma persona são algumas linhas no [personas.json](../../../personas.json): aparelho, versão do sistema, idioma, tamanho do texto, modo escuro, localização, quem ela é e o que tenta fazer. Opções em `device`: `"increase_contrast": true` (Aumentar contraste no iOS, texto em alto contraste no Android), `"reduce_motion": true` (iOS e web: os emuladores Android já rodam sem animações), `"color_filter"` (`"protanopia"`, `"deuteranopia"` ou `"tritanopia"`, aplicado às capturas de tela no Android, iOS e web) e `"network"` (`"slow"` ou `"flaky"`, só no emulador Android).
 
 ## Onde ele erra?
 

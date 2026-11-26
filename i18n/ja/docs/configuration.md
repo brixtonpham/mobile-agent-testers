@@ -11,7 +11,7 @@ gh workflow run agent-testers.yml -f source_repo=you/app -f app_id=com.you.app \
 |---|---|
 | `source_repo`, `ref` | アプリのリポジトリとブランチ（空 = このリポジトリ）。プライベートリポジトリの場合は読み取り専用の `SOURCE_REPO_TOKEN` シークレットを追加 |
 | `app_dir`, `app_id` | アプリのフォルダー、Android のパッケージ名 / iOS の bundle id（もう一方のプラットフォームが別の id を使う場合は、ビルドしたアプリから読み取ります） |
-| `android_personas`, `ios_personas` | [personas.json](../../../personas.json) の id（1 つにつき 1 台）、`all`、またはプラットフォームを飛ばす `none`。20 人が用意済み：14 言語、右から左、タブレット、小さい文字からアクセシビリティの最大サイズまで、コントラスト強調、モーション軽減、色覚フィルター |
+| `android_personas`, `ios_personas` | [personas.json](../../../personas.json) の id（1 つにつき 1 台）、`all`、またはプラットフォームを飛ばす `none`。20 人が用意済み：14 言語、右から左、タブレット、小さい文字からアクセシビリティの最大サイズまで、コントラスト強調、モーション軽減、色覚フィルター、不安定なネットワーク |
 | `brief` | エージェントへの指示：探索なら [AGENT_BRIEF.md](../../../AGENT_BRIEF.md)、改善レポートなら [briefs/improve.md](../../../briefs/improve.md)、1 つの機能を試すなら自分で書いたもの |
 | `bug_report` | 探索の代わりに再現するバグ：issue（`owner/repo#123` またはその URL）か、手順をそのまま書いたテキスト。各エージェントが自分の端末でその手順を試します（[briefs/reproduce.md](../../../briefs/reproduce.md)） |
 | `web_personas`, `web_url` | ウェブ用ペルソナの id（`tom`、`amelie`、`lena`、`arjun`）、`all`、または `none`（既定）と、試すサイトのアドレス。ほかのプラットフォームは既定値のままなので、ウェブだけで動かすときは `android_personas=none` と `ios_personas=none` を指定します。 |

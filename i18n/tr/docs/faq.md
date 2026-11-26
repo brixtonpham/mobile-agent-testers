@@ -32,7 +32,7 @@ Evet. Workflow'u private bir repodan, uygulamanızın reposu için salt okunur b
 
 ## Kendi personalarımı oluşturabilir miyim?
 
-Evet. Bir persona, [personas.json](../../../personas.json) içinde birkaç satırdan ibarettir: cihaz, işletim sistemi sürümü, dil, yazı boyutu, karanlık mod, konum, personanın kim olduğu ve ne yapmaya çalıştığı. `device` içinde isteğe bağlı erişilebilirlik ayarları da var: `"increase_contrast": true` (iOS'ta Kontrastı Artır, Android'de yüksek kontrastlı metin), `"reduce_motion": true` (iOS ve web; Android emülatörleri zaten animasyonsuz çalışır) ve `"color_filter"` (`"protanopia"`, `"deuteranopia"` veya `"tritanopia"`; Android, iOS ve web'de ekran görüntülerine uygulanır).
+Evet. Bir persona, [personas.json](../../../personas.json) içinde birkaç satırdan ibarettir: cihaz, işletim sistemi sürümü, dil, yazı boyutu, karanlık mod, konum, personanın kim olduğu ve ne yapmaya çalıştığı. `device` içinde isteğe bağlı ayarlar da var: `"increase_contrast": true` (iOS'ta Kontrastı Artır, Android'de yüksek kontrastlı metin), `"reduce_motion": true` (iOS ve web; Android emülatörleri zaten animasyonsuz çalışır), `"color_filter"` (`"protanopia"`, `"deuteranopia"` veya `"tritanopia"`; Android, iOS ve web'de ekran görüntülerine uygulanır) ve `"network"` (`"slow"` veya `"flaky"`; yalnızca Android emülatöründe).
 
 ## Nerelerde yanılıyor?
 
