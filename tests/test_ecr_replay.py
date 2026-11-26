@@ -222,11 +222,19 @@ class Check(unittest.TestCase):
         self.assertEqual(1, len(refs))
 
     def test_the_scripted_tester_reads_what_screen_py_prints(self):
+        import importlib.util
+        import xml.etree.ElementTree as ET
         sys.path.insert(0, str(ROOT / "scripts/android"))
         import replay_check
-        found = replay_check.SEEN.match('- button "Continue" centre=(540,1200)')
+        spec = importlib.util.spec_from_file_location("android_screen", ROOT / "scripts/android/screen.py")
+        android_screen = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(android_screen)
+        lines = android_screen.elements(
+            ET.fromstring('<hierarchy><node clickable="true" text="Continue" bounds="[100,1100][980,1300]"/></hierarchy>'),
+            1080, 2400,
+        )
+        found = replay_check.SEEN.match(lines[0])
         self.assertEqual(("Continue", "540", "1200"), found.groups()[1:])
-        self.assertIn('centre=({(x1 + x2) // 2},{(y1 + y2) // 2})', (ROOT / "scripts/android/screen.py").read_text(encoding="utf-8"))
         kinds = {kind for kind, _, _ in replay_check.STEPS}
         self.assertEqual({"tap", "type", "hide", "look", "keys"}, kinds)
 
